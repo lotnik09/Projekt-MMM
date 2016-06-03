@@ -19,9 +19,12 @@ public class Piekarnik_2 extends JFrame{
     final private Color kolorTla   = Color.white; 
     //final private Color kolorLiter = Color.black;
     final private Color kolorWykresu = Color.blue;
-    //static private Dimension sizeOkno;
-    static private int lengOY, lengOX;
+    
     private Vector<Double> out;
+    static private int lengOY, lengOX;
+    private final double scale = 0.5;   //skala dla podzialki liczb na osi Y
+                                        //dla skali 0.5 liczby na osi beda wyswietlane co 0.5 itp.
+                                        //wzor dla skali to 1/(2^n) - inne skale nie beda wyswietlane poprawnie
   
     Piekarnik_2()
     {
@@ -100,15 +103,17 @@ public class Piekarnik_2 extends JFrame{
         int minOy = minR*lengOY/n;
         int maxOy = maxR*lengOY/n;
         
+        int grad = (int)((double)n/scale);
+        
         if(min < 0)    //spradza czy trzeba rysowac os ujemna
         {
             g.translate (35,d.height+minOy-50);  //zmienia punkt srodka wzgledem ktorego jest rysowany wykres
-            rysujOY(g, minOy, maxOy, n*2);
+            rysujOY(g, minOy, maxOy, grad);
         }
         else
         {
             g.translate (35,d.height-50);  //zmienia punkt srodka wzgledem ktorego jest rysowany wykres
-            rysujOY(g, 0, lengOY, n*2);
+            rysujOY(g, 0, lengOY, grad);
         }
         
         for(int i = 0; i < out.size(); i++)  // przeskalowanie osi Y - proporcja
@@ -127,7 +132,7 @@ public class Piekarnik_2 extends JFrame{
         {
             int poz = (int)Math.round((double)i*N);
             g.drawLine(3,-min-poz,-3,-min-poz);
-            g.drawString(Double.toString((double)(i+minN)/2), -22, -min-poz);
+            g.drawString(Double.toString((double)(i+minN)*scale), -22, -min-poz);
         }
     }
     
